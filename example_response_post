@@ -1,0 +1,59 @@
+{
+	'id': 14306, 
+	'from_id': -147571223, 
+	'owner_id': -147571223, 
+	'date': 1581325214, 
+	'marked_as_ads': 0, 
+	'post_type': 'post', 
+	'text': '?? В последнем обновлении [club147571223|The Long Dark] в 2016 году был добавлен новый регион — Одинокая топь, обновлен пользовательский интерфейс, а также полностью переработана система одежды! \n---------------------------------------------------------------------------\n?? Исследуем v393 «RESOLUTE OUTFITTER» сегодня в 18:00 по Москве ??\n---------------------------------------------------------------------------\n#TheLongDark #Выживание #TheRiddler #Stream', 
+	'is_pinned': 1, 
+	
+	'attachments': [
+		{
+			'type': 'video', 
+			'video': {
+				'access_key': 'e3cd88079c8ef2b6db', 
+				'can_comment': 1, 
+				'can_like': 1, 
+				'can_repost': 1, 
+				'can_subscribe': 1, 
+				'can_add_to_faves': 1, 
+				'can_add': 1, 
+				'comments': 0, 
+				'date': 1581341603, 
+				'description': '??  Донат - https://www.donationalerts.com/r/ilya_the_riddler\n??  Стать спонсором - https://www.youtube.com/channel/UCFFsiJmu_Ch89FJsuzctDQA/join\n\n-------------------------\n\n? Представляем новую ветку выживания «Путешествие во времени»\n--------------------------------\nМы покажем Вам за 15 стримов, как менялась игра на протяжении 5 лет, начиная со 119 Альфа-версии 2014 года и заканчивая версией 1.72, 2020 года. Усаживайтесь поудобнее! Будет очень интересно!\n\n-------------------------\n\n? Не забудь подписаться:', 
+				'duration': 0, 
+				'image': [
+					{
+						'height': 96, 
+						'url': 'https://sun9-24.userapi.com/c857416/v857416800/17baa9/vmGzrpAr_bI.jpg', 'width': 130, 'with_padding': 1
+					}, 
+					{
+						'height': 120, 'url': 'https://sun9-15.userapi.com/c857416/v857416800/17baaa/YEepBfCZxrQ.jpg', 'width': 160, 'with_padding': 1
+					}, 
+					{
+						'height': 240, 'url': 'https://sun9-65.userapi.com/c857416/v857416800/17baab/Khe2A5pIQT8.jpg', 'width': 320, 'with_padding': 1
+					}, 
+					{
+						'height': 450, 'url': 'https://sun9-30.userapi.com/c857416/v857416800/17baac/wKMb3XQmVVY.jpg', 'width': 800, 'with_padding': 1
+					}
+				], 
+				'id': 456239325, 
+				'owner_id': -147571223, 
+				'title': 'ФЕРМА СТАРОГО СПЕНСА  "ПУТЕШЕСТВИЕ ВО ВРЕМЕНИ" > THE LONG DARK (v393) # 9', 
+				'is_favorite': 0, 
+				'track_code': 'video_03862e76hg5K5AIcFYFzxMhsutaEkfQURoCyIARRhi0i4QDWfLCxLVbnBBh_h3bFymnl4rGnxic', 
+				'type': 'video', 
+				'views': 8, 
+				'local_views': 8, 
+				'platform': 'YouTube'}}], 
+				
+				'post_source': {'type': 'vk'}, 
+				
+				'comments': {'count': 2, 'can_post': 1, 'groups_can_post': True}, 
+				
+				'likes': {'count': 43, 'user_likes': 0, 'can_like': 1, 'can_publish': 1}, 
+				
+				'reposts': {'count': 0, 'user_reposted': 0}, 
+				'views': {'count': 642}, 
+				'is_favorite': False, 'edited': 1581341604}
