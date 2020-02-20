@@ -9,20 +9,49 @@ token = '4bdb3528b751be13b6df2d41fcdc28823a7e9457cedb19ffecfdc0b4de0685f8d0c9590
 def get_my_format_time(sec):
     return time.strftime("%d.%m.%y %H:%M:%S",time.localtime(sec))
 
+# Функция для анализ данных
 def get_post_list(domain,cnt):
-    cnt = 100
+    cnt = 5
     arr_p = get_posts(domain,cnt,0)
 
     items = arr_p['items']
-    pprint( arr_p , depth=2 )
+    #pprint( arr_p , depth=2 )
     for i in items:
         dt = '(' + get_my_format_time( i['date'] ) + ')'
         txt = str(i['id']) + ' ' + dt + ' ' + str(len(i['text'])) + ' Att='
-        txt = txt + str(len(i['attachments']))
+        if 'attachments' in i:
+            txt = txt + str(len(i['attachments']))
         if 'copy_history' in i:
             txt += ' ch= ' + i['copy_history']
 
-        #print( txt )
+        print( txt )
+        print(i['text'])
+
+# Функция сканирует сообщество и подсчитывает какие поля 1-го уровня сколько раз
+# использовались
+def scan_domain_fields(domain):
+    cnt_posts = get_cnt_posts(domain)
+    print("Постов",cnt_posts)
+
+    fld1 = {}
+    start = time.time()
+    qst = 0
+    for i in range(0,cnt_posts,100):
+        arr_p = get_posts(domain,100,i)
+        qst += 1
+        items = arr_p['items']
+        time.sleep(0.5)
+        for j in items:
+            for k in j:
+                if k in fld1:
+                    fld1[k] += 1
+                else:
+                    fld1[k]=1
+
+        print(i,'-', end='')
+    print('')
+    print(fld1,end='\n')
+    print("Время работы", round( time.time()-start , 3) ,'сек. Запросов:',qst)
 
 def scan_domain(domain):
     cnt_posts = get_cnt_posts(domain)
@@ -76,7 +105,7 @@ def get_group_info(domain):
 
 # Для метода groups.getById
 params={
-    'access_token': '4bdb3528b751be13b6df2d41fcdc28823a7e9457cedb19ffecfdc0b4de0685f8d0c9590c103dac70421ae',
+    #'access_token': '4bdb3528b751be13b6df2d41fcdc28823a7e9457cedb19ffecfdc0b4de0685f8d0c9590c103dac70421ae',
     'v': '5.103',
     'group_ids':'the_riddler_2k17',
     'fields':'can_upload_doc,city,city,place,members_count,status,wall'
@@ -87,8 +116,9 @@ params={
 #url = 'https://api.vk.com/method/wall.get'
 # space_engineers , the_riddler_2k17
 
-dmn = 'the_riddler_2k17'
-#print( 'dmn',dmn, get_cnt_posts(dmn) )
+#dmn = 'the_riddler_2k17'
+dmn = 'space_engineers'
 
 #scan_domain(dmn)
-get_post_list(dmn,25)
+scan_domain_fields(dmn)
+#get_post_list(dmn,25)
