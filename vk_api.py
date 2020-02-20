@@ -3,13 +3,14 @@ sys.path.append(r"C:\Program Files\Python38\Lib\site-packages")
 import requests
 import time
 from pprint import pprint
+import pymysql
 
 token = '4bdb3528b751be13b6df2d41fcdc28823a7e9457cedb19ffecfdc0b4de0685f8d0c9590c103dac70421ae'
 
 def get_my_format_time(sec):
     return time.strftime("%d.%m.%y %H:%M:%S",time.localtime(sec))
 
-# Функция для анализ данных
+# Функция для анализ массива постов сообщества
 def get_post_list(domain,cnt):
     cnt = 5
     arr_p = get_posts(domain,cnt,0)
@@ -54,10 +55,13 @@ def scan_domain_fields(domain):
     print("Время работы", round( time.time()-start , 3) ,'сек. Запросов:',qst)
 
 def scan_domain(domain):
+    group_info = get_group_info(domain)
+    time.sleep(0.5)
     cnt_posts = get_cnt_posts(domain)
-    print("Постов",cnt_posts)
+    print('Группа = ' + domain , group_info[0]['id'] ,'Постов',cnt_posts)
 
-    fld1 = {}
+    return False
+
     start = time.time()
     qst = 0
     for i in range(0,cnt_posts,100):
@@ -66,21 +70,17 @@ def scan_domain(domain):
         items = arr_p['items']
         time.sleep(0.5)
         for j in items:
-
             #print( 'id=', j['id'] , 'date=', get_my_format_time(j['date']) )
+            #print( 'text=' , j['text'])
             #if 'text' in j:
                 #print( 'text=' , j['text'])
             #if 'attachments' in j:
                 #print( j['attachments']['title'] )
-
-            for k in j:
-                if k in fld1:
-                    fld1[k] += 1
-                else:
-                    fld1[k]=1
+            if 'copy_history' in j:
+                print('-CPH-')
 
         print('---Step---',i,'items=',len(items))
-    print(fld1)
+
     print("Время работы", round( time.time()-start , 3) ,'сек. Запросов:',qst)
 
 def get_posts(domain,cnt=1,offset=0):
@@ -93,7 +93,8 @@ def get_cnt_posts(domain):
     params={'access_token': token,'v': '5.103','domain':domain,'count':1 }
     url = 'https://api.vk.com/method/wall.get'
     r = requests.get(url,params)
-    return r.json()['response']['count']
+    r = r.json()
+    return r['response']['count']
 
 # Возвращает массив информации о сообществе
 def get_group_info(domain):
@@ -117,8 +118,18 @@ params={
 # space_engineers , the_riddler_2k17
 
 #dmn = 'the_riddler_2k17'
-dmn = 'space_engineers'
+dmn = 'egais_v_1c'
 
 #scan_domain(dmn)
-scan_domain_fields(dmn)
+#scan_domain_fields(dmn)
 #get_post_list(dmn,25)
+
+
+# Отрабатываем подключение к БД, обработку ошибок
+#con = pymysql.connect('localhost', 'root','', 'mydb')
+con = pymysql.connect('localhost', 'root','','vk')
+with con:
+    cur = con.cursor()
+    cur.execute("SHOW TABLES")
+    rows = cur.fetchall()
+    print(rows)
