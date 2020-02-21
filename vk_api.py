@@ -124,12 +124,18 @@ dmn = 'egais_v_1c'
 #scan_domain_fields(dmn)
 #get_post_list(dmn,25)
 
+try:
+    con = pymysql.connect('localhost', 'root','','vk')
+    with con:
+        cur = con.cursor()
+        sql = 'CREATE TABLE IF NOT EXISTS '
+        sql += '`groups`(`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT'
+        sql += ',`name` VARCHAR(255) NOT NULL,'
+        sql += 'PRIMARY KEY(`id`))'
+        print(sql)
+        cur.execute(sql)
+        rows = cur.fetchall()
+        print(rows)
 
-# Отрабатываем подключение к БД, обработку ошибок
-#con = pymysql.connect('localhost', 'root','', 'mydb')
-con = pymysql.connect('localhost', 'root','','vk')
-with con:
-    cur = con.cursor()
-    cur.execute("SHOW TABLES")
-    rows = cur.fetchall()
-    print(rows)
+except Exception as e:
+    print( e )
