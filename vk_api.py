@@ -3,7 +3,6 @@ sys.path.append(r"C:\Program Files\Python38\Lib\site-packages")
 import requests
 import time
 from pprint import pprint
-import pymysql
 
 token = '4bdb3528b751be13b6df2d41fcdc28823a7e9457cedb19ffecfdc0b4de0685f8d0c9590c103dac70421ae'
 
@@ -124,18 +123,4 @@ dmn = 'egais_v_1c'
 #scan_domain_fields(dmn)
 #get_post_list(dmn,25)
 
-try:
-    con = pymysql.connect('localhost', 'root','','vk')
-    with con:
-        cur = con.cursor()
-        sql = 'CREATE TABLE IF NOT EXISTS '
-        sql += '`groups`(`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT'
-        sql += ',`name` VARCHAR(255) NOT NULL,'
-        sql += 'PRIMARY KEY(`id`))'
-        print(sql)
-        cur.execute(sql)
-        rows = cur.fetchall()
-        print(rows)
 
-except Exception as e:
-    print( e )
