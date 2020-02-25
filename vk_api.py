@@ -3,6 +3,7 @@ sys.path.append(r"C:\Program Files\Python38\Lib\site-packages")
 import requests
 import time
 from pprint import pprint
+import msql
 
 token = '4bdb3528b751be13b6df2d41fcdc28823a7e9457cedb19ffecfdc0b4de0685f8d0c9590c103dac70421ae'
 
@@ -53,11 +54,27 @@ def scan_domain_fields(domain):
     print(fld1,end='\n')
     print("Время работы", round( time.time()-start , 3) ,'сек. Запросов:',qst)
 
+def set_group_cur(domain):
+    txt = 'SELECT name,g_id FROM groups WHERE name=\''+domain+'\''
+    rez = msql.sql('vk',txt)
+    print('Selection=',rez)
+    if(len(rez)==0):
+        gpinfo = get_group_info(domain)
+        gid = gpinfo[0]['id']
+        txt = 'INSERT INTO groups(`name`,`g_id`) VALUES (\''+ domain +'\', \'' + str(gid) + '\' )'
+        rez = msql.sql('vk',txt)
+        print('Isertion=',rez)
+    else:
+        gid = rez[0]['g_id']
+    return gid
+
 def scan_domain(domain):
-    group_info = get_group_info(domain)
-    time.sleep(0.5)
-    cnt_posts = get_cnt_posts(domain)
-    print('Группа = ' + domain , group_info[0]['id'] ,'Постов',cnt_posts)
+    group_cur = set_group_cur(domain)
+    #group_info = get_group_info(domain)
+    #gid = str(group_info[0]['id'])
+    #time.sleep(0.5)
+    #cnt_posts = get_cnt_posts(domain)
+    #print('Группа = ' + domain , "ID = " + gid  ,'Постов',cnt_posts)
 
     return False
 
@@ -118,6 +135,8 @@ params={
 
 #dmn = 'the_riddler_2k17'
 dmn = 'egais_v_1c'
+
+set_group_cur(dmn)
 
 #scan_domain(dmn)
 #scan_domain_fields(dmn)
