@@ -55,26 +55,33 @@ def scan_domain_fields(domain):
     print("Время работы", round( time.time()-start , 3) ,'сек. Запросов:',qst)
 
 def set_group_cur(domain):
-    txt = 'SELECT name,g_id FROM groups WHERE name=\''+domain+'\''
+    txt = 'SELECT name,gid FROM groups WHERE name=\''+domain+'\''
     rez = msql.sql('vk',txt)
     print('Selection=',rez)
     if(len(rez)==0):
         gpinfo = get_group_info(domain)
         gid = gpinfo[0]['id']
-        txt = 'INSERT INTO groups(`name`,`g_id`) VALUES (\''+ domain +'\', \'' + str(gid) + '\' )'
+        txt = 'INSERT INTO groups(`name`,`gid`) VALUES (\''+ domain +'\', \'' + str(gid) + '\' )'
         rez = msql.sql('vk',txt)
-        print('Isertion=',rez)
+        print('Insertion=',rez)
     else:
-        gid = rez[0]['g_id']
+        gid = rez[0]['gid']
     return gid
 
 def scan_domain(domain):
-    group_cur = set_group_cur(domain)
-    #group_info = get_group_info(domain)
-    #gid = str(group_info[0]['id'])
-    #time.sleep(0.5)
-    #cnt_posts = get_cnt_posts(domain)
-    #print('Группа = ' + domain , "ID = " + gid  ,'Постов',cnt_posts)
+    gid = set_group_cur(domain)
+    print(gid)
+    cnt_posts = get_cnt_posts(domain)
+    print('Группа = ' + domain , "ID = " + str(gid)  ,'Постов',cnt_posts)
+    time.sleep(0.5)
+    arr_p = get_posts(domain,10,0)
+    items = arr_p['items']
+    time.sleep(0.5)
+    for j in items:
+        pid = j['id']
+        text = j['text']
+        print( 'id=', pid , 'date=', get_my_format_time(j['date']) )
+        print( 'text=' , text )
 
     return False
 
@@ -134,9 +141,10 @@ params={
 # space_engineers , the_riddler_2k17
 
 #dmn = 'the_riddler_2k17'
-dmn = 'egais_v_1c'
+#dmn = 'egais_v_1c'
+dmn = 'space_engineers'
 
-set_group_cur(dmn)
+scan_domain(dmn)
 
 #scan_domain(dmn)
 #scan_domain_fields(dmn)

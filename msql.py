@@ -25,6 +25,10 @@ def create_table(tname,flds):
         with con:
             cur = con.cursor()
 
+            sql = 'DROP TABLE IF EXISTS ' + tname
+            rez = cur.execute(sql)
+            print(rez)
+
             sql = 'CREATE TABLE IF NOT EXISTS '
             sql += tname + '(`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT, '
             for k in flds:
@@ -44,28 +48,51 @@ def create_table(tname,flds):
     except Exception as e:
         print( e )
 
-def get_gid_from_domain(domain):
+def edit_column(tname,mode,col_name):
+    try:
+        con = pymysql.connect('localhost', 'root','','vk')
+        with con:
+            cur = con.cursor()
+            if mode=='add':
+                sql = 'ALTER TABLE ' + tname + ' ADD COLUMN ' + col_name
 
-    # if(len(rez)==0):
-    #     txt = 'INSERT INTO groups(`name`,`g_id`) VALUES (\''+ domain +'\', \'156\' )'
-    #     rez2 = sql('vk',txt)
-    #     print(rez2)
+            if mode=='del':
+                # col_name - может быть как именем колонки, так и списком имён колонок через запятую
+                sql = 'ALTER TABLE ' + tname
+                if col_name.find(',') > 0:
+                    mas_col = col_name.split(',')
+                    txt_col = ''
+                    for i in mas_col:
+                        if txt_col != '':
+                            txt_col += ','
+                        txt_col += ' DROP COLUMN ' + i
+                    sql += txt_col
+                else:
+                    sql += ' DROP COLUMN ' + col_name
 
-    return 0
+            print( 'SQL executed: ',sql )
+            rez = cur.execute(sql)
+            print(rez)
+
+    except Exception as e:
+        print( e )
 
 groups_flds = {
     'name':'VARCHAR(255)',
-    'g_id' : 'INT(11)'
+    'gid' : 'INT(11)'
 }
 
 posts_flds = {
     'text':'TEXT',
-    'g_id' : 'INT(11)',
-    'p_id' : 'INT(11)'
+    'gid' : 'INT(11)',
+    'pid' : 'INT(11)',
+    'dt'  : 'DATETIME'
 }
 
 #create_table('groups',groups_flds)
 #create_table( 'posts' , posts_flds )
 
-get_gid_from_domain('egais_v_1c')
+edit_column('posts','add','dt DATETIME NOT NULL')
+#edit_column('posts','del','dt')
+#edit_column('posts','del','st1,st2')
 
