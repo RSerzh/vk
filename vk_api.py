@@ -79,7 +79,9 @@ def proceccing_post(params):
     txt = 'SELECT * FROM posts WHERE pid=' + str(pid)
     rez = msql.sql('vk',txt)
     if(len(rez)>0):
-        print(rez)
+        # Делаем сравнивание полей и если изменились, то корректируем
+        dt = date_convert( str( rez[0]['dt'] ) )
+        print( dt )
     else:
         txt = 'INSERT INTO posts(gid,pid,dt,text) VALUES (\'' + str(gid) + '\',\'' + str(pid)
         txt += '\',\'' + date + '\',\'' + text + '\' )'
@@ -87,19 +89,25 @@ def proceccing_post(params):
         print(date)
         print('ins ' + str(pid))
 
-
+# Функция конвертирует мой формат в MySQL и наооборот. Различием моего формата и формата MySQL
+# в наличии дефисов '-'
 def date_convert(dt):
+    txt = ''
     if(dt.find('-')>0):
-        print('MySQL',dt)
+        if(len(dt)!=19):
+            print('date_convert error MySQL to myFormat:','('+dt+')')
+        else:
+            txt = dt[8:10] + '.' + dt[5:7] + '.' + dt[0:4] + ' ' + dt[11:]
+            #txt = '20' + dt[6:8] + '-' + dt[3:5] + '-' + dt[0:2] + ' ' + dt[9:]
     else:
-        print('myFormat',dt)
+        if(len(dt)!=17):
+            print('date_convert error myFormat to MySQL:','('+dt+')')
+        else:
+            txt = '20' + dt[6:8] + '-' + dt[3:5] + '-' + dt[0:2] + ' ' + dt[9:]
+
+    return txt
 
 def scan_domain(domain):
-    dt = '02.03.20 10:26:11'
-    msqldt = '2020-03-02 10:26:11'
-    date_convert(msqldt)
-    return
-
     gid = set_group_cur(domain)
     print(gid)
     cnt_posts = get_cnt_posts(domain)
@@ -116,7 +124,7 @@ def scan_domain(domain):
 
         pid = j['id']
         text = j['text']
-        date = get_my_format_time(j['date'])
+        date = date_convert( get_my_format_time(j['date']) )
 
         params['pid'] = pid
         params['date'] = date
