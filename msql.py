@@ -4,13 +4,14 @@ import pymysql
 
 def sql(db_name,sql_text):
     try:
-        con = pymysql.connect('localhost',
-                              'root',
-                              '',
-                              db_name,
-                              charset='utf8mb4',
-                              cursorclass=pymysql.cursors.DictCursor
-                              )
+        con = pymysql.connect(
+            'localhost',
+            'root',
+            '',
+            db_name,
+            charset='utf8mb4',
+            cursorclass=pymysql.cursors.DictCursor
+        )
         with con:
             cur = con.cursor()
             rez = cur.execute(sql_text)
@@ -92,7 +93,7 @@ posts_flds = {
 #create_table('groups',groups_flds)
 #create_table( 'posts' , posts_flds )
 
-edit_column('posts','add','dt DATETIME NOT NULL')
+#edit_column('posts','add','dt DATETIME NOT NULL')
 #edit_column('posts','del','dt')
 #edit_column('posts','del','st1,st2')
 

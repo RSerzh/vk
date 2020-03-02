@@ -68,20 +68,64 @@ def set_group_cur(domain):
         gid = rez[0]['gid']
     return gid
 
+# Обработка поста. Если есть в базе, то провряем на изменения и если отличаются правим
+# Если нет в базе заносим
+def proceccing_post(params):
+    pid = params['pid']
+    gid = params['gid']
+    text = params['text']
+    date = params['date']
+
+    txt = 'SELECT * FROM posts WHERE pid=' + str(pid)
+    rez = msql.sql('vk',txt)
+    if(len(rez)>0):
+        print(rez)
+    else:
+        txt = 'INSERT INTO posts(gid,pid,dt,text) VALUES (\'' + str(gid) + '\',\'' + str(pid)
+        txt += '\',\'' + date + '\',\'' + text + '\' )'
+        msql.sql('vk',txt)
+        print(date)
+        print('ins ' + str(pid))
+
+
+def date_convert(dt):
+    if(dt.find('-')>0):
+        print('MySQL',dt)
+    else:
+        print('myFormat',dt)
+
 def scan_domain(domain):
+    dt = '02.03.20 10:26:11'
+    msqldt = '2020-03-02 10:26:11'
+    date_convert(msqldt)
+    return
+
     gid = set_group_cur(domain)
     print(gid)
     cnt_posts = get_cnt_posts(domain)
     print('Группа = ' + domain , "ID = " + str(gid)  ,'Постов',cnt_posts)
     time.sleep(0.5)
-    arr_p = get_posts(domain,10,0)
+    arr_p = get_posts(domain,2,0)
     items = arr_p['items']
     time.sleep(0.5)
+
+    params = {}
+    params['gid'] = gid
+
     for j in items:
+
         pid = j['id']
         text = j['text']
-        print( 'id=', pid , 'date=', get_my_format_time(j['date']) )
-        print( 'text=' , text )
+        date = get_my_format_time(j['date'])
+
+        params['pid'] = pid
+        params['date'] = date
+        params['text'] = text
+
+        proceccing_post(params)
+
+        #print( 'id=', pid , 'date=', date )
+        #print( 'text=' , text )
 
     return False
 
@@ -96,9 +140,9 @@ def scan_domain(domain):
             #print( 'id=', j['id'] , 'date=', get_my_format_time(j['date']) )
             #print( 'text=' , j['text'])
             #if 'text' in j:
-                #print( 'text=' , j['text'])
+            #print( 'text=' , j['text'])
             #if 'attachments' in j:
-                #print( j['attachments']['title'] )
+            #print( j['attachments']['title'] )
             if 'copy_history' in j:
                 print('-CPH-')
 
