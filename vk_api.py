@@ -86,8 +86,7 @@ def proceccing_post(params):
         txt = 'INSERT INTO posts(gid,pid,dt,text) VALUES (\'' + str(gid) + '\',\'' + str(pid)
         txt += '\',\'' + date + '\',\'' + text + '\' )'
         msql.sql('vk',txt)
-        print(date)
-        print('ins ' + str(pid))
+        print(date , 'ins ' + str(pid))
 
 # Функция конвертирует мой формат в MySQL и наооборот. Различием моего формата и формата MySQL
 # в наличии дефисов '-'
@@ -108,49 +107,30 @@ def date_convert(dt):
     return txt
 
 def scan_domain(domain):
+
     gid = set_group_cur(domain)
-    print(gid)
     cnt_posts = get_cnt_posts(domain)
-    print('Группа = ' + domain , "ID = " + str(gid)  ,'Постов',cnt_posts)
-    time.sleep(0.5)
-    arr_p = get_posts(domain,2,0)
-    items = arr_p['items']
-    time.sleep(0.5)
-
-    params = {}
-    params['gid'] = gid
-
-    for j in items:
-
-        pid = j['id']
-        text = j['text']
-        date = date_convert( get_my_format_time(j['date']) )
-
-        params['pid'] = pid
-        params['date'] = date
-        params['text'] = text
-
-        proceccing_post(params)
-
-        #print( 'id=', pid , 'date=', date )
-        #print( 'text=' , text )
-
-    return False
 
     start = time.time()
     qst = 0
+    params = {}
+    params['gid'] = gid
+    cnt = 0
+
     for i in range(0,cnt_posts,100):
         arr_p = get_posts(domain,100,i)
         qst += 1
         items = arr_p['items']
         time.sleep(0.5)
         for j in items:
-            #print( 'id=', j['id'] , 'date=', get_my_format_time(j['date']) )
-            #print( 'text=' , j['text'])
-            #if 'text' in j:
-            #print( 'text=' , j['text'])
-            #if 'attachments' in j:
-            #print( j['attachments']['title'] )
+            cnt += 1
+            pr = round( cnt * 100 / cnt_posts , 2)
+            params['pid'] = j['id']
+            params['date'] = date_convert( get_my_format_time(j['date']) )
+            params['text'] = j['text']
+            print(pr,"% ",end="")
+            proceccing_post(params)
+
             if 'copy_history' in j:
                 print('-CPH-')
 
@@ -193,10 +173,10 @@ params={
 # space_engineers , the_riddler_2k17
 
 #dmn = 'the_riddler_2k17'
-#dmn = 'egais_v_1c'
-dmn = 'space_engineers'
+dmn = 'egais_v_1c'
+#dmn = 'space_engineers'
 
-#scan_domain(dmn)
+scan_domain(dmn)
 
 #scan_domain(dmn)
 #scan_domain_fields(dmn)

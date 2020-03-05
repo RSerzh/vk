@@ -89,8 +89,8 @@ def web_sql( params , sql_text ):
             params['pass'],
             params['dbname'],
             port=3307,
-            charset='utf8mb4'
-            #cursorclass=pymysql.cursors.DictCursor
+            charset='utf8mb4',
+            cursorclass=pymysql.cursors.DictCursor
         )
         with con:
             cur = con.cursor()
@@ -118,12 +118,3 @@ posts_flds = {
 #edit_column('posts','add','dt DATETIME NOT NULL')
 #edit_column('posts','del','dt')
 #edit_column('posts','del','st1,st2')
-
-sql_text = 'SELECT * FROM bids'
-params = { 'ip':'mysql.uName.myjino.ru' , 'login':'uName' , 'pass' : 'pass' , 'dbname' : 'xyzm_bids' }
-
-# sql_text = 'SELECT * FROM posts'
-# params = { 'ip':'localhost' , 'login':'root' , 'pass' : '' , 'dbname' : 'vk' }
-
-r = web_sql( params , sql_text )
-print(r)
