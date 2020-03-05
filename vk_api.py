@@ -196,7 +196,7 @@ params={
 #dmn = 'egais_v_1c'
 dmn = 'space_engineers'
 
-scan_domain(dmn)
+#scan_domain(dmn)
 
 #scan_domain(dmn)
 #scan_domain_fields(dmn)
